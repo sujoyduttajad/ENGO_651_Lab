@@ -1,45 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Bootstrap Page</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Portfolio</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+   <!-- Custom SCSS (compiled to CSS) -->
+   <link rel="stylesheet" href="styles.css">
+    
+   <!-- Google Fonts -->
+   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@600&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
+    <style>      
+      .hero {
+        background: url('https://images.unsplash.com/photo-1737143765999-bd3be790ab4f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        text-align: center;
+      }
+      .skills .card {
+        transition: transform 0.3s;
+      }
+      .skills .card:hover {
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body class="vh-100">
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">My Website</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="work.html">Work Experience</a></li>
-                </ul>
-            </div>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">My Portfolio</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="projects.html">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="work.html">Work Experience</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
-    <!-- Main Content Section -->
-    <div class="container mt-4">
-        <h1>Welcome to My Website</h1>
-        <p>This is a Bootstrap-powered page.</p>
-    </div>
+    <!-- Hero Section -->
+    <header class="hero">
+      <div>
+        <h1>Sujoy Dutta</h1>
+        <p class="lead">Front-End Developer | UI/UX Enthusiast</p>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+      <div class="container text-center">
+        <h2>About Me</h2>
+        <p>
+          I am a passionate front-end developer focused on clean UI and performance optimization.
+        </p>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills py-5 text-bg-dark p-3">
+      <div class="container">
+        <h2 class="text-center mb-4">Skills</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card p-3 text-center">
+              <h4>HTML & CSS</h4>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3 text-center">
+              <h4>JavaScript & TypeScript</h4>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3 text-center">
+              <h4>React & Redux</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Footer -->
     <footer class="bg-dark text-light text-center py-3">
-        &copy; 2025 My Website | All Rights Reserved
+      &copy; 2025 Sujoy Dutta | All Rights Reserved
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+  </body>
 </html>

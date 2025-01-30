@@ -1,45 +1,106 @@
-
 <!-- work.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Work Experience</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">My Portfolio</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="work.html">Work Experience</a></li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">My Portfolio</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="projects.html">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="work.html">Work Experience</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
     <div class="container mt-4">
-        <h1 class="text-primary">Work Experience</h1>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Job Title</h5>
-                        <p class="card-text">Company Name - Duration</p>
-                        <p>Responsibilities and achievements in this role.</p>
-                    </div>
-                </div>
+      <h1 class="text-primary mb-4">Work Experience</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Work Experience 1 -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Full Stack Developer</h5>
+              <p class="card-text">
+                MetricStream Infotech Pvt. Ltd : June 2019 - July 2020
+              </p>
+              <ul>
+                <li>
+                  <strong>Roles and Responsibility -</strong> Developed as well
+                  as collaborated with different teams to built a centralized
+                  framework to define business logic which can be applied to an
+                  easy to understand UI/UX that improves configurability of GRC
+                  Applications.
+                </li>
+                <li>
+                  <strong>Environment -</strong>> JavaScript, jQuery, HTML5,
+                  CSS3, Bootstrap, Node.js, Backbone.js
+                </li>
+                <li>
+                  <strong>Description -</strong> Business Rules is a standard
+                  framework where user can write any rule on a component in
+                  groovy and it will execute it on the server as well as UI, it
+                  will validate the rule, detect cycles (using Direct Acyclic
+                  graphs – DAG), save it in ElasticSearch, execute it on
+                  server-side returning true or false, convert it to JavaScript
+                  and send to UI.
+                </li>
+              </ul>
             </div>
+          </div>
+
+          <!-- Work Experience 2 -->
+
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Project Engineer</h5>
+              <p class="card-text">Wipro Technologies : July 2018 - May 2019</p>
+              <ul>
+                <li><strong>Role –</strong> Software Developer</li>
+                <li><strong>Duration -</strong> 11 months</li>
+                <li><strong>Client -</strong> Zurich American Insurance</li>
+                <li>
+                  <strong>Description -</strong> Contributed to the Document
+                  generation with the Papyrus tool, log connection, and
+                  construction of the input and response logs in SOMS for input
+                  request by increasing the revenue by $600. Tech stack consists
+                  of JavaScript, SOAP UI, HTML, CSS, Bootstrap, JADE(PUG), Node,
+                  and Express.
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <footer class="bg-dark text-light text-center py-3 mt-5">&copy; 2025 My Portfolio</footer>
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+      &copy; 2025 My Portfolio
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>

@@ -21,8 +21,12 @@ $font-secondary: 'Nanum Gothic', sans-serif;
   box-sizing: border-box;
 }
 
-html {
+
+
+html, body {
   box-sizing: border-box;
+  height: 100%; 
+  margin: 0; 
 }
 
 body {
@@ -33,6 +37,8 @@ body {
   font-size: 15px;
   line-height: 1.5;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -167,6 +173,7 @@ footer {
   margin: 0 auto;
   padding: 60px 0 0 60px;
   justify-content: center;
+  margin-top: auto;
 }
 
 ul.da {

@@ -1,4 +1,4 @@
-# My Portfolio
+# Lab 0 - My Portfolio in HTML & CSS
 
 This repository contains the code for my personal portfolio website, showcasing my work experience, education, projects, and contact information.
 

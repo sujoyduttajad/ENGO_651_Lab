@@ -32,6 +32,7 @@ body {
   font-family: $font-primary;
   font-size: 15px;
   line-height: 1.5;
+  min-height: 100vh;
 }
 
 a {
@@ -112,7 +113,7 @@ header {
 
 // Skills Section
 .skills {
-  @include section-style($secondary-color);
+  background-color: $secondary-color;
 }
 
 // Projects Section

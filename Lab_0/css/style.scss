@@ -1,0 +1,200 @@
+// Imports
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
+// Variables
+$primary-color: #48cae4;
+$secondary-color: #0096c7;
+$tertiary-color: #0582ca;
+$quaternary-color: #0077b6;
+$dark-bg: #212529;
+$light-text: #e9ecef;
+$accent-color: #ffe66d;
+$font-primary: 'Work Sans', sans-serif;
+$font-secondary: 'Nanum Gothic', sans-serif;
+
+// Global Styles
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  color: #051923;
+  margin: 0;
+  padding: 0;
+  font-family: $font-primary;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+a {
+  color: $accent-color;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+img {
+  width: 300px;
+  border: 1.4px solid #fff;
+  border-radius: 10px;
+}
+
+// Typography
+h2 {
+  font-size: 200%;
+  margin: 0;
+}
+
+h3 {
+  font-size: 160%;
+}
+
+h4 {
+  font-size: 140%;
+}
+
+// Layout
+.content-wrap {
+  width: 800px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+// Sections
+@mixin section-style($bg-color, $text-color: #051923) {
+  background-color: $bg-color;
+  color: $text-color;
+}
+
+.header {
+  @include section-style($primary-color, #1f271b);
+}
+
+.section__one {
+  @include section-style($secondary-color);
+}
+
+.section__two {
+  @include section-style($tertiary-color);
+}
+
+.section__three {
+  @include section-style($quaternary-color, $light-text);
+}
+
+.section__four {
+  @include section-style(#023e8a, $light-text);
+}
+
+.section__five {
+  @include section-style($dark-bg, $light-text);
+}
+
+// Profile Section
+header {
+  @include section-style($primary-color, #1f271b);
+}
+
+#name {
+  font-family: $font-secondary;
+  font-size: 80px;
+  font-weight: 500;
+}
+
+// Skills Section
+.skills {
+  @include section-style($secondary-color);
+}
+
+// Projects Section
+.projects {
+  @include section-style($tertiary-color);
+
+  a {
+    color: #2F3061;
+  }
+
+  .btn {
+    color: #F7FFF7;
+    background-color: #2c3e50;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 4px;
+    display: inline-block;
+    border: 1px solid #fff;
+
+    &:hover {
+      background: rgba(47, 49, 97, 80%);
+      color: aliceblue;
+    }
+  }
+
+  .project-section {
+    overflow: hidden;
+
+    img {
+      float: left;
+      margin-right: 12px;
+    }
+  }
+}
+
+// Work Experience Section
+.work-experience {
+  @include section-style($quaternary-color, $light-text);
+}
+
+// Education Section
+.education {
+  @include section-style(#023e8a, $light-text);
+}
+
+// Contact Info Section
+footer {
+  @include section-style($dark-bg, $light-text);
+  display: inline-block;
+  width: 100%;
+  margin: 0 auto;
+  padding: 60px 0 0 60px;
+  justify-content: center;
+}
+
+ul.da {
+  list-style-type: none !important;
+}
+
+// Media Queries
+@media only screen and (max-width: 480px) {
+  section,
+  header {
+    font-size: 37px;
+    min-height: 90vh;
+    margin: 0 15px;
+    box-sizing: border-box;
+  }
+
+  footer {
+    font-size: 37px;
+    text-align: left;
+    width: 100%;
+    margin: 0 15px;
+  }
+
+  .icons {
+    padding: 5px;
+    margin: 0 10px 0 0;
+  }
+
+  h2, p {
+    margin: 0 15px;
+  }
+}

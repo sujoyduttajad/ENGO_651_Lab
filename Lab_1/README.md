@@ -14,11 +14,11 @@ This is a **Flask-based web application** that allows users to **search for book
 ```
 📂 project-folder/
 ├── 📄 app.py              # Main Flask application
+├── 📄 books.csv           # original books csv file
 ├── 📄 import.py           # Imports books from books.csv into MySQL
 ├── 📄 requirements.txt    # List of dependencies
 ├── 📄 README.md           # Project documentation
 ├── 📂 templates/          # HTML templates for frontend
-│   ├── 📄 home.html       # Homepage
 │   ├── 📄 register.html   # User registration page
 │   ├── 📄 login.html      # User login page
 │   ├── 📄 search.html     # Search page

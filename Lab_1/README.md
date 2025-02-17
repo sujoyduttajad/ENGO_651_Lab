@@ -2,6 +2,9 @@
 
 ENGO 551
 
+### Name - SUJOY DUTTA
+#### UCID - 30210488
+
 # Book Review Web Application
 
 ## Project Overview
@@ -58,7 +61,7 @@ pip install -r requirements.txt
    ```sh
    py .\app.py
    ```
-   
+
    and visit `http://127.0.0.1:5000/create_table` to create tables.
 
 ### **Step 4: Import Book Data**

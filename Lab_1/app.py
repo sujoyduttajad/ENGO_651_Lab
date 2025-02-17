@@ -112,3 +112,41 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
+
+# SEARCH PAGE 
+@app.route("/search", methods=["GET"])
+def search():
+    if "user_id" not in session:
+        return redirect("/login")
+
+    query = request.args.get("q")
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM books WHERE isbn LIKE %s OR title LIKE %s OR author LIKE %s",
+                   (f"%{query}%", f"%{query}%", f"%{query}%"))
+    
+    books = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    return render_template("search.html", books=books)
+
+# BOOK DETAILS PAGE 
+@app.route("/book/<int:book_id>")
+def book_page(book_id):
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM books WHERE id = %s", (book_id,))
+    book = cursor.fetchone()
+    
+    cursor.execute("SELECT reviews.review_text, reviews.rating, users.username FROM reviews JOIN users ON reviews.user_id = users.id WHERE book_id = %s",
+                   (book_id,))
+    reviews = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("book.html", book=book, reviews=reviews)
+

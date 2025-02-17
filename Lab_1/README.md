@@ -1,11 +1,13 @@
 # Project 1
 
-ENGO 551
+ENGO 551 - Lab 1 Assignment
 
 ### Name - SUJOY DUTTA
 #### UCID - 30210488
 
-# Book Review Web Application
+# Flask Library Web Application
+
+## ** BE ADVISED I USED MYSQL INSTEAD OF POSTGRES SINCE I RAN INTO MAJOR ISSUES WITH POSTGRES AUTHENTICATION I HAD TO SWITCH TO MYSQL ALTHOUGH THE OBJECTIVES OF THE ASSIGNMENT ARE FULLFILLED**
 
 ## Project Overview
 This is a **Flask-based web application** that allows users to **search for books** and view their details. Users can also register and log in to access features. The project uses **MySQL** as the database and employs **Flask sessions** for user authentication.

@@ -49,14 +49,16 @@ pip install -r requirements.txt
    ```sh
    mysql -u root -p
    ```
-3. Create the database:
-   ```sql
-   CREATE DATABASE booksdb;
-   ```
-4. Add required tables using:
+3. Just run the app file:
    ```sh
    python app.py
    ```
+   OR
+
+   ```sh
+   py .\app.py
+   ```
+   
    and visit `http://127.0.0.1:5000/create_table` to create tables.
 
 ### **Step 4: Import Book Data**

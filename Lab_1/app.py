@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, url_for
 import mysql.connector
 import bcrypt
 from flask_session import Session
@@ -56,26 +56,24 @@ def create_table():
     
     return "Tables created successfully!"
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
 # REGISTER - USER AUTHENTICATION 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+             
         
+        # Hash password before storing
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
         db = get_db_connection()
         cursor = db.cursor()
-        
-        # Hash the password before storing
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
         try:
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
             db.commit()
-            return redirect("/login")
+            return redirect(url_for("login"))
         except:
             return "Username already exists!"
         finally:
@@ -100,9 +98,9 @@ def login():
         
         if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
             session["user_id"] = user[0]
-            return redirect("/search")
+            return redirect(url_for("search"))
         else:
-            return "Invalid login!"
+            return render_template("login.html", error="Invalid username or password")
     
     return render_template("login.html")
 
@@ -111,7 +109,7 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/")
+    return redirect(url_for("login"))
 
 # SEARCH PAGE 
 @app.route("/search", methods=["GET"])
@@ -148,5 +146,11 @@ def book_page(book_id):
     cursor.close()
     db.close()
 
-    return render_template("book.html", book=book, reviews=reviews)
+    return render_template("book.html", book=book)
 
+
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

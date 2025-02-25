@@ -4,6 +4,7 @@ import mysql.connector
 import bcrypt
 from flask_session import Session
 import requests
+import google.generativeai as genai
 
 app = Flask(__name__)
 
@@ -23,6 +24,10 @@ def get_db_connection():
 
 # GOOGLE API KEY
 GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY")
+
+# Gemini API key and config
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
+genai.configure(api_key=GENAI_API_KEY)
 
 # ---- FLASK FUNCTIONS ----
 
@@ -184,6 +189,9 @@ def book_page(book_id):
     # Google Books Reviews & Rating data
     book["google_data"] = fetch_google_books_data(book["isbn"])
 
+    # Using Gemini API summarise description
+    book["summary"] = get_book_summary(book["title"], book["author"])
+
     cursor.close()
     db.close()
 
@@ -221,6 +229,36 @@ def add_review(book_id):
     
     return redirect(url_for("book_page", book_id=book_id))
 
+# API access for Book details
+@app.route("/api/<isbn>", methods=["GET"])
+def api_book_details(isbn):
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM books WHERE isbn = %s", (isbn,))
+    book = cursor.fetchone()
+
+    cursor.close()
+    db.close()
+
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+
+    google_data = fetch_google_books_data(isbn)
+    summarized_description = get_book_summary(book["title"], book["author"])
+
+    return jsonify({
+        "title": book["title"],
+        "author": book["author"],
+        "publishedDate": book["published_year"],
+        "ISBN_10": isbn,
+        "ISBN_13": None,  # Update if available
+        "reviewCount": google_data["ratingsCount"],
+        "averageRating": google_data["averageRating"],
+        "summarizedDescription": summarized_description
+    })
+
+
 # Fetch Google Books Review Data
 def fetch_google_books_data(isbn):
     url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={GOOGLE_BOOKS_API_KEY}"
@@ -235,6 +273,14 @@ def fetch_google_books_data(isbn):
             "description": book_info.get("description", None)
         }
     return {"averageRating": None, "ratingsCount": None, "description": None}
+
+# Gemini Summary Description
+def get_book_summary(title, author):
+    model = genai.GenerativeModel("gemini-pro")
+    prompt = f"Summarize the book '{title}' by {author} in under 50 words."
+    response = model.generate_content(prompt)
+    return response.text
+
 
 
 if __name__ == "__main__":

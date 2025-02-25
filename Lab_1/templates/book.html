@@ -46,6 +46,7 @@
                 <hr>
 
                 <div class="book-info">
+                    <p><strong>ISBN-13:</strong> {{ book.google_data.isbn_13 if book.google_data.isbn_13 else 'Not available' }}</p>
                     <p><strong>ISBN:</strong> {{ book.isbn }}</p>
                     <p><strong>Author:</strong> {{ book.author }}</p>
                     <p><strong>Published Year:</strong> {{ book.year }}</p>

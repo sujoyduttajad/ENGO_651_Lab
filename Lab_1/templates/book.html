@@ -20,6 +20,18 @@
         .back-btn {
             margin-top: 20px;
         }
+        .google-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        .google-logo {
+            height: 20px;
+        }
+        .stars {
+            color: #FFD700;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +55,24 @@
 
                 <hr>
 
+                <h4>Google Books Rating:</h4>
+                {% if book.google_data.averageRating %}
+                <div class="google-rating">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="google-logo">
+                    <span>{{ book.google_data.averageRating }}</span>
+                    <span class="stars">★★★★☆</span>
+                    <span>({{ book.google_data.ratingsCount }} ratings)</span>
+                </div>
+                {% else %}
+                <p class="text-muted">No Google rating available.</p>
+                {% endif %}
+
+                <hr>
+
+                <h4>Book Summary:</h4>
+                <p>{{ book.google_data.description }}</p>
+
+                <hr>
                 <h4>User Reviews:</h4>
                 {% if reviews %}
                 <ul class="list-group">

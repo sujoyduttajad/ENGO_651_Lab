@@ -199,7 +199,7 @@ def book_page(book_id):
 
 
 
-# REVIEWS SUBMIT REQUEST
+# USER REVIEWS SUBMIT REQUEST
 @app.route("/book/<int:book_id>/review", methods=["POST"])
 def add_review(book_id):
     if "user_id" not in session:
@@ -252,7 +252,7 @@ def api_book_details(isbn):
         "author": book["author"],
         "publishedDate": book["published_year"],
         "ISBN_10": isbn,
-        "ISBN_13": None, 
+        "ISBN_13": google_data["isbn_13"],
         "reviewCount": google_data["ratingsCount"],
         "averageRating": google_data["averageRating"],
         "summarizedDescription": summarized_description
@@ -267,12 +267,21 @@ def fetch_google_books_data(isbn):
 
     if "items" in data:
         book_info = data["items"][0]["volumeInfo"]
+
+        isbn_13 = None
+        if "industryIdentifiers" in book_info:
+            for identifier in book_info["industryIdentifiers"]:
+                if identifier["type"] == "ISBN_13":
+                    isbn_13 = identifier["identifier"]
+                    break
+
         return {
+            "isbn_13": isbn_13,
             "averageRating": book_info.get("averageRating", None),
             "ratingsCount": book_info.get("ratingsCount", None),
             "description": book_info.get("description", None)
         }
-    return {"averageRating": None, "ratingsCount": None, "description": None}
+    return {"isbn_13": None, "averageRating": None, "ratingsCount": None, "description": None}
 
 # Gemini Summary Description
 def get_book_summary(title, author):

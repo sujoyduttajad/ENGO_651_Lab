@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, session, jsonify, u
 import mysql.connector
 import bcrypt
 from flask_session import Session
+import requests
 
 app = Flask(__name__)
 
@@ -19,6 +20,9 @@ def get_db_connection():
         password=os.getenv("DBPASSWORD", "yourpassword"),  
         database="booksdb"
     )
+
+# GOOGLE API KEY
+GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY")
 
 # ---- FLASK FUNCTIONS ----
 
@@ -163,6 +167,11 @@ def book_page(book_id):
     cursor.execute("SELECT * FROM books WHERE id = %s", (book_id,))
     book = cursor.fetchone()
 
+    if not book:
+        cursor.close()
+        db.close()
+        return "Book not found!", 404  
+
     cursor.execute("""
         SELECT reviews.review_text, reviews.rating, users.username 
         FROM reviews 
@@ -172,13 +181,14 @@ def book_page(book_id):
     
     reviews = cursor.fetchall()
 
+    # Google Books Reviews & Rating data
+    book["google_data"] = fetch_google_books_data(book["isbn"])
+
     cursor.close()
     db.close()
 
-    if not book:
-        return "Book not found!", 404  
-
     return render_template("book.html", book=book, reviews=reviews)
+
 
 
 # REVIEWS SUBMIT REQUEST
@@ -211,6 +221,20 @@ def add_review(book_id):
     
     return redirect(url_for("book_page", book_id=book_id))
 
+# Fetch Google Books Review Data
+def fetch_google_books_data(isbn):
+    url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={GOOGLE_BOOKS_API_KEY}"
+    response = requests.get(url)
+    data = response.json()
+
+    if "items" in data:
+        book_info = data["items"][0]["volumeInfo"]
+        return {
+            "averageRating": book_info.get("averageRating", None),
+            "ratingsCount": book_info.get("ratingsCount", None),
+            "description": book_info.get("description", None)
+        }
+    return {"averageRating": None, "ratingsCount": None, "description": None}
 
 
 if __name__ == "__main__":

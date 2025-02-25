@@ -153,23 +153,33 @@ def search():
 
     return render_template("search.html", books=books)
 
+
 # BOOK DETAILS PAGE 
 @app.route("/book/<int:book_id>")
 def book_page(book_id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
     
-    # Fetch book details only (No reviews)
     cursor.execute("SELECT * FROM books WHERE id = %s", (book_id,))
     book = cursor.fetchone()
+
+    cursor.execute("""
+        SELECT reviews.review_text, reviews.rating, users.username 
+        FROM reviews 
+        JOIN users ON reviews.user_id = users.id 
+        WHERE book_id = %s
+    """, (book_id,))
+    
+    reviews = cursor.fetchall()
 
     cursor.close()
     db.close()
 
     if not book:
-        return "Book not found!", 404  # Show error if book doesn't exist
+        return "Book not found!", 404  
 
-    return render_template("book.html", book=book)
+    return render_template("book.html", book=book, reviews=reviews)
+
 
 # REVIEWS SUBMIT REQUEST
 @app.route("/book/<int:book_id>/review", methods=["POST"])
@@ -184,7 +194,6 @@ def add_review(book_id):
     db = get_db_connection()
     cursor = db.cursor()
 
-    # Ensure user hasn't already reviewed this book
     cursor.execute("SELECT * FROM reviews WHERE user_id = %s AND book_id = %s", (user_id, book_id))
     existing_review = cursor.fetchone()
 

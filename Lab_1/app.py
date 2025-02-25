@@ -58,6 +58,21 @@ def create_table():
     )
     """)
 
+    # REVIEWS TABLE ---
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS reviews (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        book_id INT NOT NULL,
+        review_text TEXT NOT NULL,
+        rating INT CHECK (rating BETWEEN 1 AND 5),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (user_id, book_id), -- Ensures a user can submit only one review per book
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+    )               
+    """)
+
     db.commit()
     cursor.close()
     db.close()
@@ -155,9 +170,6 @@ def book_page(book_id):
         return "Book not found!", 404  # Show error if book doesn't exist
 
     return render_template("book.html", book=book)
-
-
-
 
 
 

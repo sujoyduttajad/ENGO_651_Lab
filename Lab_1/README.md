@@ -1,4 +1,4 @@
-# Project 1
+# Lab 1 and Lab 2
 
 ENGO 551 - Lab 1 Assignment
 

@@ -5,7 +5,10 @@ ENGO 551 - Lab 2 Assignment video link - https://yuja.ucalgary.ca/V/Video?v=1166
 ### Name - SUJOY DUTTA
 #### UCID - 30210488
 
-## ** Screencast video is in the Lab_1 folder names as video1021482984.mp4 **
+For Lab 2 changes made - 
+### ***Google Books API data fetched and updated into the book table***
+### ***Google Gemini API utilized to generate summary with error handling***
+### ***Added Reviews table, user can add one review per book***
 
 # Flask Library Web Application
 

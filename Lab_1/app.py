@@ -287,8 +287,22 @@ def fetch_google_books_data(isbn):
 def get_book_summary(title, author):
     model = genai.GenerativeModel("gemini-pro")
     prompt = f"Summarize the book '{title}' by {author} in under 50 words."
+
     response = model.generate_content(prompt)
-    return response.text
+
+    # ERROR HANDLER
+    if not response or not response.candidates:
+        return "Summary unavailable."
+
+    candidate = response.candidates[0]
+
+    if candidate.finish_reason == 3:
+        return "Summary restricted due to content guidelines."
+
+    try:
+        return candidate.content.parts[0].text
+    except (AttributeError, IndexError):
+        return "Summary unavailable."
 
 
 

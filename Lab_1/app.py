@@ -67,7 +67,7 @@ def create_table():
         review_text TEXT NOT NULL,
         rating INT CHECK (rating BETWEEN 1 AND 5),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE (user_id, book_id), -- Ensures a user can submit only one review per book
+        UNIQUE (user_id, book_id),
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
     )               
@@ -170,6 +170,37 @@ def book_page(book_id):
         return "Book not found!", 404  # Show error if book doesn't exist
 
     return render_template("book.html", book=book)
+
+# REVIEWS SUBMIT REQUEST
+@app.route("/book/<int:book_id>/review", methods=["POST"])
+def add_review(book_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user_id = session["user_id"]
+    review_text = request.form["review_text"]
+    rating = int(request.form["rating"])
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    # Ensure user hasn't already reviewed this book
+    cursor.execute("SELECT * FROM reviews WHERE user_id = %s AND book_id = %s", (user_id, book_id))
+    existing_review = cursor.fetchone()
+
+    if existing_review:
+        cursor.close()
+        db.close()
+        return "You have already reviewed this book!", 400
+
+    cursor.execute("INSERT INTO reviews (user_id, book_id, review_text, rating) VALUES (%s, %s, %s, %s)",
+                   (user_id, book_id, review_text, rating))
+    db.commit()
+
+    cursor.close()
+    db.close()
+    
+    return redirect(url_for("book_page", book_id=book_id))
 
 
 

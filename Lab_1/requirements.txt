@@ -2,3 +2,5 @@ Flask
 mysql-connector-python
 flask-session
 bcrypt
+requests
+google.generativeai

@@ -252,7 +252,7 @@ def api_book_details(isbn):
         "author": book["author"],
         "publishedDate": book["published_year"],
         "ISBN_10": isbn,
-        "ISBN_13": None,  # Update if available
+        "ISBN_13": None, 
         "reviewCount": google_data["ratingsCount"],
         "averageRating": google_data["averageRating"],
         "summarizedDescription": summarized_description

@@ -1,6 +1,6 @@
 # Lab 1 and Lab 2
 
-ENGO 551 - Lab 1 Assignment
+ENGO 551 - Lab 2 Assignment video link - https://yuja.ucalgary.ca/V/Video?v=1166446&a=177710513 
 
 ### Name - SUJOY DUTTA
 #### UCID - 30210488

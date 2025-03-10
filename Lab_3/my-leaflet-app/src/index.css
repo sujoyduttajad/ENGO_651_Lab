@@ -33,7 +33,7 @@ a:hover {
 }
 .main__frame {
   max-width: 90vw;
-  max-height: 80vh;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -44,6 +44,7 @@ a:hover {
   flex-direction: "column";
   height: "100%";
   margin-top: 2rem;
+  border-radius: 5.5px;
 }
 
 /* @media (prefers-color-scheme: light) {

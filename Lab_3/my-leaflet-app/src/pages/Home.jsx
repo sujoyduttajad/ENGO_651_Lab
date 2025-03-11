@@ -3,50 +3,72 @@ import Header from "../components/Header";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { formatDate } from "../utils/functions";
+import { CircularProgress } from "@mui/material";
 
 const Home = () => {
-  const [geoData, setGeoData] = useState(null);
+  const [geoData, setGeoData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  // Fetch All Permits on Initial Load
   useEffect(() => {
-    fetch("https://data.calgary.ca/resource/c2es-76ed.geojson")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.features) {
-          setGeoData(data);
-        } else {
-          console.error("Invalid GeoJSON data:", data);
-        }
-      })
-      .catch((error) => console.error("Error fetching GeoJSON data:", error));
+    if (geoData.length === 0) {
+      setLoading(true);
+      fetch("https://data.calgary.ca/resource/c2es-76ed.geojson")
+        .then((response) => response.json())
+        .then((data) => setGeoData(data.features ? data.features : []))
+        .catch((error) => console.error("Error fetching data:", error))
+        .finally(() => setLoading(false));
+    }
   }, []);
+  
+
+  // Fetch permits based on date range selection
+  const fetchFilteredPermits = async (start, end) => {
+    if (!start || !end) return alert("Please select a valid date range!");
+  
+    setLoading(true);
+    const startFormatted = start.toISOString().split("T")[0];
+    const endFormatted = end.toISOString().split("T")[0];
+  
+    const apiUrl = `https://data.calgary.ca/resource/c2es-76ed.geojson?$where=issueddate >= '${startFormatted}' AND issueddate <= '${endFormatted}'`;
+  
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setGeoData([]); 
+      setTimeout(() => setGeoData(data.features ? data.features : []), 500); 
+    } catch (error) {
+      console.error("Error fetching permits:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   const onEachFeature = (feature, layer) => {
     if (feature.properties) {
       const popupContent = `
-         <div style="padding: 16px; font-family: 'Roboto', sans-serif;">
+        <div style="padding: 16px; font-family: 'Roboto', sans-serif;">
           <h2 style="margin: 0; font-size: 1.25rem;">Permit Details</h2>
-          <p style="margin: 8px 0;"><strong>Permit Number:</strong> ${
-            feature.properties.permitnum
+          <p><strong>Permit Number:</strong> ${
+            feature.properties.permitnum || "Not Available"
           }</p>
-          <p style="margin: 8px 0;"><strong>Community Name:</strong> ${
-            feature.properties.communityname
+          <p><strong>Community Name:</strong> ${
+            feature.properties.communityname || "Not Available"
           }</p>
-
-          <p style="margin: 8px 0;"><strong>Issue Date:</strong> ${
-            feature.properties.issueddate === null
-              ? "Not Available"
-              : formatDate(feature.properties.issueddate)
+          <p><strong>Issue Date:</strong> ${
+            feature.properties.issueddate
+              ? formatDate(feature.properties.issueddate)
+              : "Not Available"
           }</p>
-          <p style="margin: 8px 0;"><strong>Contractor Name:</strong> ${
-            feature.properties.contractorname === null
-              ? "Not Available"
-              : feature.properties.contractorname
+          <p><strong>Contractor Name:</strong> ${
+            feature.properties.contractorname || "Not Available"
           }</p>
-          <p style="margin: 8px 0;"><strong>Workclass Group:</strong> ${
-            feature.properties.workclassgroup
+          <p><strong>Workclass Group:</strong> ${
+            feature.properties.workclassgroup || "Not Available"
           }</p>
-          <p style="margin: 8px 0;"><strong>Original Address:</strong> ${
-            feature.properties.originaladdress
+          <p><strong>Original Address:</strong> ${
+            feature.properties.originaladdress || "Not Available"
           }</p>
         </div>
       `;
@@ -54,12 +76,22 @@ const Home = () => {
     }
   };
 
-  // API url -
-  // https://data.calgary.ca/resource/c2es-76ed.json
-
   return (
     <section className="main__frame">
-      <Header />
+      <Header fetchPermits={fetchFilteredPermits} />
+
+      {loading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
 
       <MapContainer
         center={[51.0447, -114.0719]}
@@ -71,7 +103,9 @@ const Home = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
-        {geoData && <GeoJSON data={geoData} onEachFeature={onEachFeature} />}
+        {geoData.length > 0 && (
+          <GeoJSON key={geoData.length} data={geoData} onEachFeature={onEachFeature} />
+        )}
       </MapContainer>
     </section>
   );

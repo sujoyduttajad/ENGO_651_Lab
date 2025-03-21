@@ -3,11 +3,16 @@ import Header from "../components/Header";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { formatDate } from "../utils/functions";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, FormControlLabel, Switch } from "@mui/material";
+import { process } from "dotenv"
 
 const Home = () => {
   const [geoData, setGeoData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showMapbox, setShowMapbox] = useState(false);
+
+  const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+  const MAPBOX_STYLE_ID = import.meta.env.VITE_MAPBOX_STYLE_ID; 
 
   // Fetch All Permits on Initial Load
   useEffect(() => {
@@ -77,37 +82,94 @@ const Home = () => {
   };
 
   return (
+    // <section className="main__frame">
+    //   <Header fetchPermits={fetchFilteredPermits} />
+
+    //   {loading && (
+    //     <div
+    //       style={{
+    //         position: "absolute",
+    //         top: "50%",
+    //         left: "50%",
+    //         zIndex: 9999,
+    //       }}
+    //     >
+    //       <CircularProgress />
+    //     </div>
+    //   )}
+
+    //   <MapContainer
+    //     center={[51.0447, -114.0719]}
+    //     zoom={12}
+    //     className="map__container"
+    //     style={{ height: "100vh" }}
+    //   >
+    //     <TileLayer
+    //       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    //       attribution="&copy; OpenStreetMap contributors"
+    //     />
+    //     {geoData.length > 0 && (
+    //       <GeoJSON key={geoData.length} data={geoData} onEachFeature={onEachFeature} />
+    //     )}
+    //   </MapContainer>
+    // </section>
     <section className="main__frame">
-      <Header fetchPermits={fetchFilteredPermits} />
+    <Header fetchPermits={fetchFilteredPermits} />
 
-      {loading && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            zIndex: 9999,
-          }}
-        >
-          <CircularProgress />
-        </div>
-      )}
+    <FormControlLabel
+      control={
+        <Switch
+          checked={showMapbox}
+          onChange={(e) => setShowMapbox(e.target.checked)}
+          color="primary"
+        />
+      }
+      label="Toggle Mapbox Layer"
+      style={{ position: "absolute", top: 90, left: 20, zIndex: 9999 }}
+    />
 
-      <MapContainer
-        center={[51.0447, -114.0719]}
-        zoom={12}
-        className="map__container"
-        style={{ height: "100vh" }}
+    {loading && (
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          zIndex: 9999,
+        }}
       >
+        <CircularProgress />
+      </div>
+    )}
+
+    <MapContainer
+      center={[51.0447, -114.0719]}
+      zoom={12}
+      className="map__container"
+      style={{ height: "100vh" }}
+    >
+      {/* Default Base Layer: OpenStreetMap */}
+      {!showMapbox && (
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
-        {geoData.length > 0 && (
-          <GeoJSON key={geoData.length} data={geoData} onEachFeature={onEachFeature} />
-        )}
-      </MapContainer>
-    </section>
+      )}
+
+      {/* Mapbox Style Layer (custom style or streets-v11) */}
+      {showMapbox && (
+        <TileLayer
+          url={`https://api.mapbox.com/styles/v1/${MAPBOX_STYLE_ID}/tiles/{z}/{x}/{y}?access_token=${MAPBOX_ACCESS_TOKEN}`}
+          attribution="&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a>"
+          tileSize={512}
+          zoomOffset={-1}
+        />
+      )}
+
+      {geoData.length > 0 && (
+        <GeoJSON key={geoData.length} data={geoData} onEachFeature={onEachFeature} />
+      )}
+    </MapContainer>
+  </section>
   );
 };
 

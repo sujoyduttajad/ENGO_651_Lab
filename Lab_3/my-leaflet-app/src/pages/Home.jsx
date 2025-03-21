@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../components/Header";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { formatDate } from "../utils/functions";
 import { CircularProgress, FormControlLabel, Switch } from "@mui/material";
-import { process } from "dotenv"
+import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 
 const Home = () => {
   const [geoData, setGeoData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMapbox, setShowMapbox] = useState(false);
 
+
   const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
   const MAPBOX_STYLE_ID = import.meta.env.VITE_MAPBOX_STYLE_ID; 
+  const MAPBOX_USERNAME = import.meta.env.MAPBOX_USERNAME
 
   // Fetch All Permits on Initial Load
   useEffect(() => {
@@ -25,6 +29,8 @@ const Home = () => {
         .finally(() => setLoading(false));
     }
   }, []);
+
+
   
 
   // Fetch permits based on date range selection
@@ -82,37 +88,6 @@ const Home = () => {
   };
 
   return (
-    // <section className="main__frame">
-    //   <Header fetchPermits={fetchFilteredPermits} />
-
-    //   {loading && (
-    //     <div
-    //       style={{
-    //         position: "absolute",
-    //         top: "50%",
-    //         left: "50%",
-    //         zIndex: 9999,
-    //       }}
-    //     >
-    //       <CircularProgress />
-    //     </div>
-    //   )}
-
-    //   <MapContainer
-    //     center={[51.0447, -114.0719]}
-    //     zoom={12}
-    //     className="map__container"
-    //     style={{ height: "100vh" }}
-    //   >
-    //     <TileLayer
-    //       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    //       attribution="&copy; OpenStreetMap contributors"
-    //     />
-    //     {geoData.length > 0 && (
-    //       <GeoJSON key={geoData.length} data={geoData} onEachFeature={onEachFeature} />
-    //     )}
-    //   </MapContainer>
-    // </section>
     <section className="main__frame">
     <Header fetchPermits={fetchFilteredPermits} />
 
@@ -147,7 +122,7 @@ const Home = () => {
       className="map__container"
       style={{ height: "100vh" }}
     >
-      {/* Default Base Layer: OpenStreetMap */}
+     
       {!showMapbox && (
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -155,10 +130,10 @@ const Home = () => {
         />
       )}
 
-      {/* Mapbox Style Layer (custom style or streets-v11) */}
+     
       {showMapbox && (
         <TileLayer
-          url={`https://api.mapbox.com/styles/v1/${MAPBOX_STYLE_ID}/tiles/{z}/{x}/{y}?access_token=${MAPBOX_ACCESS_TOKEN}`}
+          url={`https://api.mapbox.com/styles/v1/${MAPBOX_USERNAME}/${MAPBOX_STYLE_ID}/wmts?access_token=${MAPBOX_ACCESS_TOKEN}`}
           attribution="&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a>"
           tileSize={512}
           zoomOffset={-1}

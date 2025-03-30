@@ -23,7 +23,7 @@ const DateRangePicker = ({ onDateChange }) => {
         alignItems: "center",
         width: "40vw",
         maxWidth: 450,
-        zIndex: 9999
+        zIndex: 9999,
       }}
     >
       <DatePicker

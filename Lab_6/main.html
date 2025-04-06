@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
 
   <style>
-    /* #map { height: 100vh; }
+    #map { height: 100vh; }
     .controls {
       position: absolute;
       top: 10px;
@@ -26,7 +26,7 @@
       background-color: white;
       border: 1px solid #ccc;
       cursor: pointer;
-    } */
+    }
   </style>
 </head>
 <body>
@@ -45,7 +45,69 @@
 <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 
 <script>
-  
+  // Initialize the map centered on Calgary
+  const map = L.map('map').setView([51.0447, -114.0719], 12);
+
+  // Add OpenStreetMap base layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  let drawnLayer = null;
+  let simplifiedLayer = null;
+
+  const drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+
+  const drawControl = new L.Control.Draw({
+    draw: {
+      polyline: true,
+      polygon: false,
+      rectangle: false,
+      circle: false,
+      marker: false,
+      circlemarker: false
+    },
+    edit: {
+      featureGroup: drawnItems,
+      remove: false
+    }
+  });
+  map.addControl(drawControl);
+
+  // Listen for polyline drawing
+  map.on(L.Draw.Event.CREATED, function (e) {
+    if (drawnLayer) drawnItems.removeLayer(drawnLayer);
+    if (simplifiedLayer) map.removeLayer(simplifiedLayer);
+
+    drawnLayer = e.layer;
+    drawnItems.addLayer(drawnLayer);
+  });
+
+  // Simplify button logic
+  document.getElementById('simplifyBtn').onclick = () => {
+    if (!drawnLayer) {
+      alert("Draw a polyline first.");
+      return;
+    }
+
+    const geojson = drawnLayer.toGeoJSON();
+    const simplified = turf.simplify(geojson, { tolerance: 0.0005, highQuality: true });
+
+    if (simplifiedLayer) map.removeLayer(simplifiedLayer);
+
+    simplifiedLayer = L.geoJSON(simplified, {
+      style: { color: 'red', weight: 4 }
+    }).addTo(map);
+  };
+
+  // Clear button logic
+  document.getElementById('clearBtn').onclick = () => {
+    if (drawnLayer) drawnItems.removeLayer(drawnLayer);
+    if (simplifiedLayer) map.removeLayer(simplifiedLayer);
+    drawnLayer = null;
+    simplifiedLayer = null;
+  };
 </script>
 
 </body>

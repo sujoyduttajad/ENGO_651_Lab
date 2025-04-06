@@ -53,12 +53,6 @@ const Home = () => {
       client.connect({ onSuccess, useSSL: true });
     };
 
-    const onConnect = () => {
-      console.log("✅ MQTT Connected to broker");
-      client.subscribe(topic);
-      console.log(`📡 Subscribed to topic: ${topic}`);
-    };
-
     client.onMessageArrived = (message) => {
       console.log("Message received:", message.payloadString);
       const data = JSON.parse(message.payloadString);

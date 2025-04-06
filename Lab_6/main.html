@@ -90,10 +90,10 @@
       alert("Draw a polyline first.");
       return;
     }
-
+    // Converts the polyline into GeoJSON 
     const geojson = drawnLayer.toGeoJSON();
 
-    // Turf.js Simplify button that creates the red marker
+    // Turf.js Simplify button that creates the red marker, tolerance to control simplification
     const simplified = turf.simplify(geojson, { tolerance: 0.0005, highQuality: true });
 
     if (simplifiedLayer) map.removeLayer(simplifiedLayer);
